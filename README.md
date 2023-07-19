@@ -42,3 +42,10 @@ pool.connect((err) => {
 });
 
 module.exports = pool;
+
+
+
+
+mainWindow.removeMenu(); // Quita el menú de Electron
+  mainWindow.maximize(); // Maximiza la ventana
+  mainWindow.show(); // Muestra la ventana
