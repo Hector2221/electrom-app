@@ -16,36 +16,34 @@ https://medium.com/@duytq94/bundling-your-react-web-to-a-desktop-app-with-electr
 
 
 
-/* eslint-disable */
 
-const sql = require('mssql');
 
-const config = {
-  user: 'sa',
-  password: '12',
-  server: 'DESKTOP-5H15VG0',
-  database: 'test',
-  options: {
-    encrypt: true, // Si es necesario, dependiendo de tu configuración
-    trustServerCertificate: true,
-  },
-};
+import path from 'path';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
+import MenuBuilder from './menu';
+import { resolveHtmlPath } from './util';
+const express = require('express');
+const cors = require('cors');
 
-const pool = new sql.ConnectionPool(config);
+const expressApp = express(); // Cambiamos el nombre de la variable para evitar conflictos
 
-pool.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err.message);
-  } else {
-    console.log('Conexión exitosa a la base de datos SQL Server');
-  }
+const port = 5000;
+
+// Habilita CORS para todas las rutas
+expressApp.use(cors());
+
+// Ruta que devuelve "Hola Mundo"
+expressApp.get('/api/hola', (req, res) => {
+  res.send('Hola Mundo');
 });
 
-module.exports = pool;
+// Iniciar el servidor
+expressApp.listen(port, () => {
+  console.log(`Servidor Express escuchando en el puerto ${port}`);
+});
 
 
 
-
-mainWindow.removeMenu(); // Quita el menú de Electron
-  mainWindow.maximize(); // Maximiza la ventana
-  mainWindow.show(); // Muestra la ventana
+"start": "concurrently \"npm run start:renderer\" \"npm run start-server\"",
